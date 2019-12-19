@@ -45,6 +45,7 @@ public class Communicator {
 		while(!stop) {
 			String message = scanner.nextLine();
 			validateIsExitCode(message);
+			message = encryptMessage(message);
 			dataOutputStream.writeUTF(message);
 		}
 	}
@@ -62,6 +63,7 @@ public class Communicator {
 		while(!stop) {
 			if(messagesStream.available() > 0) {
 				String message = messagesStream.readUTF();
+				message = decryptMessage(message);
 				validateIsExitCode(message);
 				System.out.println(address + ": " + message);
 			}
@@ -80,6 +82,14 @@ public class Communicator {
 		} catch(IOException e) {
 			System.out.println("Error while closing connection: " + e.getMessage());
 		}
+	}
+
+	protected String encryptMessage(String message) {
+		return message;
+	}
+
+	protected String decryptMessage(String message) {
+		return message;
 	}
 
 }

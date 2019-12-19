@@ -5,6 +5,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
+import drofff.crypto.algorithm.AES;
+import drofff.crypto.algorithm.CryptoAlgorithm;
+import drofff.crypto.enums.Size;
+import drofff.crypto.mode.CBCDecoder;
+import drofff.crypto.mode.CBCEncoder;
+import drofff.crypto.mode.CipherMode;
+import drofff.soft.enums.CommunicationMode;
 import drofff.soft.enums.State;
 import drofff.soft.events.ClientCommunicationEvent;
 import drofff.soft.events.Event;
@@ -76,7 +83,11 @@ public class LineServer extends Service {
 	}
 
 	private void runChat(Socket socket) {
-		Communicator communicator = new Communicator(socket, scanner);
+		CryptoAlgorithm aes = new AES(Size._128_BITS, Size._128_BITS);
+		CipherMode encoder = CBCEncoder.withCryptoAlgorithm(aes);
+		CipherMode decoder = CBCDecoder.withCryptoAlgorithm(aes);
+		Communicator communicator = new SecureCommunicator(socket, scanner, encoder,
+				decoder, CommunicationMode.SERVER);
 		communicator.run();
 	}
 

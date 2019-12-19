@@ -6,6 +6,12 @@ import java.net.UnknownHostException;
 import java.util.Optional;
 import java.util.Scanner;
 
+import drofff.crypto.algorithm.AES;
+import drofff.crypto.algorithm.CryptoAlgorithm;
+import drofff.crypto.enums.Size;
+import drofff.crypto.mode.CBCEncoder;
+import drofff.crypto.mode.CipherMode;
+import drofff.soft.enums.CommunicationMode;
 import drofff.soft.enums.State;
 import drofff.soft.events.ClientCommunicationEvent;
 import drofff.soft.events.Event;
@@ -62,7 +68,11 @@ public class LineClient extends Service {
 
 	private void runChat(Socket socket) {
 		sendCommunicationStartEventToServer();
-		Communicator communicator = new Communicator(socket, scanner);
+		CryptoAlgorithm aes = new AES(Size._128_BITS, Size._128_BITS);
+		CipherMode encoder = CBCEncoder.withCryptoAlgorithm(aes);
+		CipherMode decoder = CBCEncoder.withCryptoAlgorithm(aes);
+		Communicator communicator = new SecureCommunicator(socket, scanner, encoder,
+				decoder, CommunicationMode.CLIENT);
 		communicator.run();
 		sendCommunicationFinishEventToServer();
 	}
