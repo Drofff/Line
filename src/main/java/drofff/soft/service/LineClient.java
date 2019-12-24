@@ -9,6 +9,7 @@ import java.util.Scanner;
 import drofff.crypto.algorithm.AES;
 import drofff.crypto.algorithm.CryptoAlgorithm;
 import drofff.crypto.enums.Size;
+import drofff.crypto.mode.CBCDecoder;
 import drofff.crypto.mode.CBCEncoder;
 import drofff.crypto.mode.CipherMode;
 import drofff.soft.enums.CommunicationMode;
@@ -70,7 +71,7 @@ public class LineClient extends Service {
 		sendCommunicationStartEventToServer();
 		CryptoAlgorithm aes = new AES(Size._128_BITS, Size._128_BITS);
 		CipherMode encoder = CBCEncoder.withCryptoAlgorithm(aes);
-		CipherMode decoder = CBCEncoder.withCryptoAlgorithm(aes);
+		CipherMode decoder = CBCDecoder.withCryptoAlgorithm(aes);
 		Communicator communicator = new SecureCommunicator(socket, scanner, encoder,
 				decoder, CommunicationMode.CLIENT);
 		communicator.run();

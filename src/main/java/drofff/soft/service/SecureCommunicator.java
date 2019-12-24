@@ -33,9 +33,9 @@ public class SecureCommunicator extends Communicator {
 
 	private String sessionKey;
 
-	public SecureCommunicator(Socket socket, Scanner scanner,
-	                          CipherMode encoder, CipherMode decoder,
-	                          CommunicationMode communicationMode) {
+	SecureCommunicator(Socket socket, Scanner scanner,
+	                   CipherMode encoder, CipherMode decoder,
+	                   CommunicationMode communicationMode) {
 		super(socket, scanner);
 		this.socket = socket;
 		this.communicationMode = communicationMode;
