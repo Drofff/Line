@@ -22,8 +22,8 @@ import drofff.soft.utils.CommunicationUtils;
 
 public class LineClient extends Service {
 
-	private Scanner scanner;
-	private int serverPort;
+	private final Scanner scanner;
+	private final int serverPort;
 
 	public LineClient(Scanner scanner, EventsBroker eventsBroker, int serverPort) {
 		super(eventsBroker);

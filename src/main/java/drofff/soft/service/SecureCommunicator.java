@@ -25,11 +25,11 @@ public class SecureCommunicator extends Communicator {
 	private static final String SERVER_ACKNOWLEDGMENT = "ACK";
 	private static final int ACKNOWLEDGEMENT_WAIT_TIME = 3;
 
-	private Socket socket;
-	private CommunicationMode communicationMode;
+	private final Socket socket;
+	private final CommunicationMode communicationMode;
 
-	private CipherMode encoder;
-	private CipherMode decoder;
+	private final CipherMode encoder;
+	private final CipherMode decoder;
 
 	private String sessionKey;
 

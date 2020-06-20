@@ -5,9 +5,9 @@ import java.util.List;
 
 public class EventsBroker {
 
-	private List<Event> serverEvents = new ArrayList<>();
+	private final List<Event> serverEvents = new ArrayList<>();
 
-	private List<Event> clientEvents = new ArrayList<>();
+	private final List<Event> clientEvents = new ArrayList<>();
 
 	public void sendEventToClient(Event event) {
 		putEventIntoList(event, clientEvents);

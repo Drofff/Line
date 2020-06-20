@@ -13,9 +13,9 @@ public class Communicator {
 	private static final String EXIT_CODE = "::exit";
 	private static final Executor EXECUTOR = Executors.newSingleThreadExecutor();
 
-	private Socket socket;
-	private String address;
-	private Scanner scanner;
+	private final Socket socket;
+	private final String address;
+	private final Scanner scanner;
 
 	private volatile boolean stop = false;
 

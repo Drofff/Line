@@ -14,8 +14,8 @@ public abstract class Service {
 
 	private static final long SLEEP_MILLIS = 1000;
 
-	private EventsBroker eventsBroker;
-	private Map<Long, Consumer<Event>> eventsProcessorsRegistry = new HashMap<>();
+	private final EventsBroker eventsBroker;
+	private final Map<Long, Consumer<Event>> eventsProcessorsRegistry = new HashMap<>();
 
 	private boolean stop = false;
 	private boolean active = true;

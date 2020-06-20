@@ -25,8 +25,8 @@ public class LineServer extends Service {
 	private static final String YES_ANSWER = "yes";
 	private static final String NO_ANSWER = "no";
 
-	private ServerSocket serverSocket;
-	private Scanner scanner;
+	private final ServerSocket serverSocket;
+	private final Scanner scanner;
 
 	public LineServer(int port, Scanner scanner, EventsBroker eventsBroker) throws IOException {
 		super(eventsBroker);
