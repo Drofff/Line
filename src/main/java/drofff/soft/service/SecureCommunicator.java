@@ -1,11 +1,5 @@
 package drofff.soft.service;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
-import java.util.Scanner;
-
 import com.drofff.crypto.algorithm.RSA;
 import com.drofff.crypto.dto.RSAKey;
 import com.drofff.crypto.dto.RSAKeys;
@@ -15,6 +9,11 @@ import drofff.soft.enums.CommunicationMode;
 import drofff.soft.exception.LineException;
 import drofff.soft.utils.DataStreamUtils;
 import drofff.soft.utils.KeyGenerationUtils;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
 public class SecureCommunicator extends Communicator {
 
@@ -33,10 +32,9 @@ public class SecureCommunicator extends Communicator {
 
 	private String sessionKey;
 
-	SecureCommunicator(Socket socket, Scanner scanner,
-	                   CipherMode encoder, CipherMode decoder,
-	                   CommunicationMode communicationMode) {
-		super(socket, scanner);
+	SecureCommunicator(Socket socket, CipherMode encoder,
+					   CipherMode decoder, CommunicationMode communicationMode) {
+		super(socket);
 		this.socket = socket;
 		this.communicationMode = communicationMode;
 		this.encoder = encoder;

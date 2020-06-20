@@ -1,17 +1,12 @@
 package drofff.soft.service;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Optional;
-import java.util.Scanner;
-
 import com.drofff.crypto.algorithm.AES;
 import com.drofff.crypto.algorithm.CryptoAlgorithm;
 import com.drofff.crypto.enums.Size;
 import com.drofff.crypto.mode.CBCDecoder;
 import com.drofff.crypto.mode.CBCEncoder;
 import com.drofff.crypto.mode.CipherMode;
+import drofff.soft.constants.AddressConstants;
 import drofff.soft.enums.CommunicationMode;
 import drofff.soft.enums.State;
 import drofff.soft.events.ClientCommunicationEvent;
@@ -20,14 +15,17 @@ import drofff.soft.events.EventsBroker;
 import drofff.soft.events.ServerCommunicationEvent;
 import drofff.soft.utils.CommunicationUtils;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Optional;
+
 public class LineClient extends Service {
 
-	private final Scanner scanner;
 	private final int serverPort;
 
-	public LineClient(Scanner scanner, EventsBroker eventsBroker, int serverPort) {
+	public LineClient(EventsBroker eventsBroker, int serverPort) {
 		super(eventsBroker);
-		this.scanner = scanner;
 		this.serverPort = serverPort;
 		registerEventProcessors();
 	}
@@ -39,9 +37,9 @@ public class LineClient extends Service {
 
 	private void processServerCommunicationEvent(Event event) {
 		ServerCommunicationEvent serverCommunicationEvent = (ServerCommunicationEvent) event;
-		if(serverCommunicationEvent.getState().equals(State.START)) {
+		if(serverCommunicationEvent.getState() == State.START) {
 			setActive(false);
-		} else if(serverCommunicationEvent.getState().equals(State.FINISH)) {
+		} else if(serverCommunicationEvent.getState() == State.FINISH) {
 			setActive(true);
 		}
 	}
@@ -49,8 +47,14 @@ public class LineClient extends Service {
 	@Override
 	void serve() {
 		String destinationAddress = CommunicationUtils.askForIpAddress("Enter destination IP address to start chat: ");
-		Optional<Socket> socket = connectToServer(destinationAddress);
-		socket.ifPresent(this::runChat);
+		if(isNotNullAddress(destinationAddress)) {
+			Optional<Socket> socket = connectToServer(destinationAddress);
+			socket.ifPresent(this::runChat);
+		}
+	}
+
+	private boolean isNotNullAddress(String address) {
+		return !address.equals(AddressConstants.NULL_ADDRESS);
 	}
 
 	private Optional<Socket> connectToServer(String address) {
@@ -72,8 +76,7 @@ public class LineClient extends Service {
 		CryptoAlgorithm aes = new AES(Size._128_BITS, Size._128_BITS);
 		CipherMode encoder = CBCEncoder.withCryptoAlgorithm(aes);
 		CipherMode decoder = CBCDecoder.withCryptoAlgorithm(aes);
-		Communicator communicator = new SecureCommunicator(socket, scanner, encoder,
-				decoder, CommunicationMode.CLIENT);
+		Communicator communicator = new SecureCommunicator(socket, encoder, decoder, CommunicationMode.CLIENT);
 		communicator.run();
 		sendCommunicationFinishEventToServer();
 	}

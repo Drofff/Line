@@ -4,9 +4,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import static drofff.soft.utils.CommunicationUtils.getUserInput;
 
 public class Communicator {
 
@@ -15,14 +16,12 @@ public class Communicator {
 
 	private final Socket socket;
 	private final String address;
-	private final Scanner scanner;
 
 	private volatile boolean stop = false;
 
-	public Communicator(Socket socket, Scanner scanner) {
+	public Communicator(Socket socket) {
 		this.socket = socket;
 		this.address = socket.getInetAddress().toString();
-		this.scanner = scanner;
 	}
 
 	public void run() {
@@ -43,7 +42,7 @@ public class Communicator {
 		System.out.println("Chat with " + address + " has started. To exit please enter the following command: " + EXIT_CODE);
 		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 		while(!stop) {
-			String message = scanner.nextLine();
+			String message = getUserInput();
 			validateIsExitCode(message);
 			message = encryptMessage(message);
 			dataOutputStream.writeUTF(message);

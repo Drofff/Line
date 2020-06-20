@@ -1,10 +1,5 @@
 package drofff.soft.service;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Scanner;
-
 import com.drofff.crypto.algorithm.AES;
 import com.drofff.crypto.algorithm.CryptoAlgorithm;
 import com.drofff.crypto.enums.Size;
@@ -13,12 +8,12 @@ import com.drofff.crypto.mode.CBCEncoder;
 import com.drofff.crypto.mode.CipherMode;
 import drofff.soft.enums.CommunicationMode;
 import drofff.soft.enums.State;
-import drofff.soft.events.ClientCommunicationEvent;
-import drofff.soft.events.Event;
-import drofff.soft.events.EventsBroker;
-import drofff.soft.events.ServerCommunicationEvent;
-import drofff.soft.events.ShutdownEvent;
+import drofff.soft.events.*;
 import drofff.soft.utils.CommunicationUtils;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class LineServer extends Service {
 
@@ -26,12 +21,10 @@ public class LineServer extends Service {
 	private static final String NO_ANSWER = "no";
 
 	private final ServerSocket serverSocket;
-	private final Scanner scanner;
 
-	public LineServer(int port, Scanner scanner, EventsBroker eventsBroker) throws IOException {
+	public LineServer(int port, EventsBroker eventsBroker) throws IOException {
 		super(eventsBroker);
 		serverSocket = new ServerSocket(port);
-		this.scanner = scanner;
 		registerEventProcessors();
 	}
 
@@ -75,6 +68,7 @@ public class LineServer extends Service {
 		String question = "There is a connection attempt from ip address " + ipAddress + "\nAccept?";
 		String decision = CommunicationUtils.askQuestion(question, YES_ANSWER, NO_ANSWER);
 		if(decision.equals(YES_ANSWER)) {
+			CommunicationUtils.clearAnswerStack();
 			runChat(socket);
 		} else if(decision.equals(NO_ANSWER)) {
 			System.out.println("Okay. Request has been successfully refused");
@@ -86,8 +80,7 @@ public class LineServer extends Service {
 		CryptoAlgorithm aes = new AES(Size._128_BITS, Size._128_BITS);
 		CipherMode encoder = CBCEncoder.withCryptoAlgorithm(aes);
 		CipherMode decoder = CBCDecoder.withCryptoAlgorithm(aes);
-		Communicator communicator = new SecureCommunicator(socket, scanner, encoder,
-				decoder, CommunicationMode.SERVER);
+		Communicator communicator = new SecureCommunicator(socket, encoder, decoder, CommunicationMode.SERVER);
 		communicator.run();
 	}
 
