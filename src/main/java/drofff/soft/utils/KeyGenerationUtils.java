@@ -3,8 +3,8 @@ package drofff.soft.utils;
 import java.util.Objects;
 import java.util.UUID;
 
-import drofff.crypto.algorithm.RSA;
-import drofff.crypto.dto.RSAKeys;
+import com.drofff.crypto.algorithm.RSA;
+import com.drofff.crypto.dto.RSAKeys;
 
 public class KeyGenerationUtils {
 

@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
-import drofff.crypto.algorithm.RSA;
-import drofff.crypto.dto.RSAKey;
-import drofff.crypto.dto.RSAKeys;
-import drofff.crypto.mode.CipherMode;
-import drofff.crypto.utils.ArrayUtils;
+import com.drofff.crypto.algorithm.RSA;
+import com.drofff.crypto.dto.RSAKey;
+import com.drofff.crypto.dto.RSAKeys;
+import com.drofff.crypto.mode.CipherMode;
+import com.drofff.crypto.utils.ArrayUtils;
 import drofff.soft.enums.CommunicationMode;
 import drofff.soft.exception.LineException;
 import drofff.soft.utils.DataStreamUtils;

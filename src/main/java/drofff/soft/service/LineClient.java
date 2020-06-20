@@ -6,12 +6,12 @@ import java.net.UnknownHostException;
 import java.util.Optional;
 import java.util.Scanner;
 
-import drofff.crypto.algorithm.AES;
-import drofff.crypto.algorithm.CryptoAlgorithm;
-import drofff.crypto.enums.Size;
-import drofff.crypto.mode.CBCDecoder;
-import drofff.crypto.mode.CBCEncoder;
-import drofff.crypto.mode.CipherMode;
+import com.drofff.crypto.algorithm.AES;
+import com.drofff.crypto.algorithm.CryptoAlgorithm;
+import com.drofff.crypto.enums.Size;
+import com.drofff.crypto.mode.CBCDecoder;
+import com.drofff.crypto.mode.CBCEncoder;
+import com.drofff.crypto.mode.CipherMode;
 import drofff.soft.enums.CommunicationMode;
 import drofff.soft.enums.State;
 import drofff.soft.events.ClientCommunicationEvent;
